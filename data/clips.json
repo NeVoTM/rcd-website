@@ -1,0 +1,20 @@
+{
+  "featuredClipId": null,
+  "clips": [
+    {
+      "id": "elie-wiesel-sing",
+      "title": "The Rebbe taught him to sing, not cry",
+      "hook": "Elie Wiesel and the Rebbe",
+      "language": "en",
+      "sourceYoutube": "lO8zL2on-t8",
+      "file": null,
+      "youtubeId": null,
+      "published": false,
+      "tags": ["rebbe-stories", "optimism"]
+    }
+  ],
+  "playlists": {
+    "rebbeStories": "https://www.youtube.com/@RabbiDalfin",
+    "books": "https://www.rabbidalfin.com"
+  }
+}

@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: rcd-website
+    runtime: static
+    buildCommand: echo "Static site"
+    staticPublishPath: .
+    routes:
+      - type: rewrite
+        source: /clip
+        destination: /clip.html
