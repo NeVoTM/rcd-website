@@ -1,16 +1,54 @@
 {
-  "featuredClipId": null,
+  "heroPortrait": "/public/images/portraits/rcd-portrait-04.jpg",
+  "portraits": [
+    "/public/images/portraits/rcd-portrait-01.jpg",
+    "/public/images/portraits/rcd-portrait-02.jpg",
+    "/public/images/portraits/rcd-portrait-03.jpg",
+    "/public/images/portraits/rcd-portrait-04.jpg",
+    "/public/images/portraits/rcd-portrait-05.jpg",
+    "/public/images/portraits/rcd-portrait-06.jpg",
+    "/public/images/portraits/rcd-portrait-07.jpg",
+    "/public/images/portraits/rcd-portrait-08.jpg",
+    "/public/images/portraits/rcd-portrait-09.jpg",
+    "/public/images/portraits/rcd-portrait-10.jpg",
+    "/public/images/portraits/rcd-portrait-11.jpg",
+    "/public/images/portraits/rcd-portrait-12.jpg",
+    "/public/images/portraits/rcd-portrait-13.jpg"
+  ],
+  "featuredClipId": "panama-farbrengen",
   "clips": [
     {
-      "id": "elie-wiesel-sing",
-      "title": "The Rebbe taught him to sing, not cry",
-      "hook": "Elie Wiesel and the Rebbe",
+      "id": "panama-farbrengen",
+      "title": "Stories that move you",
+      "hook": "Panama farbrengen — courage for real life",
       "language": "en",
       "sourceYoutube": "lO8zL2on-t8",
+      "youtubeId": "lO8zL2on-t8",
       "file": null,
-      "youtubeId": null,
-      "published": false,
-      "tags": ["rebbe-stories", "optimism"]
+      "published": true,
+      "tags": ["rebbe-stories", "farbrengen"]
+    },
+    {
+      "id": "zerizus-miracle",
+      "title": "The zerizus miracle",
+      "hook": "When urgency meets faith",
+      "language": "en",
+      "sourceYoutube": "KTH1kN3lVGE",
+      "youtubeId": "KTH1kN3lVGE",
+      "file": "zerizus-miracle.mp4",
+      "published": true,
+      "tags": ["rebbe-stories", "miracles"]
+    },
+    {
+      "id": "yud-tes-kislev",
+      "title": "Yud Tes Kislev",
+      "hook": "Light in exile — a Rebbe story",
+      "language": "en",
+      "sourceYoutube": "Aa9QMofyqbM",
+      "youtubeId": "Aa9QMofyqbM",
+      "file": "yud-tes-kislev.mp4",
+      "published": true,
+      "tags": ["rebbe-stories", "chassidus"]
     }
   ],
   "playlists": {
