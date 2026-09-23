@@ -23,19 +23,8 @@
     "/public/images/portraits/rcd-portrait-20.jpg",
     "/public/images/portraits/rcd-portrait-21.jpg"
   ],
-  "featuredClipId": "panama-farbrengen",
+  "featuredClipId": "zerizus-miracle",
   "clips": [
-    {
-      "id": "panama-farbrengen",
-      "title": "Stories that move you",
-      "hook": "Panama farbrengen — courage for real life",
-      "language": "en",
-      "sourceYoutube": "lO8zL2on-t8",
-      "youtubeId": "lO8zL2on-t8",
-      "file": null,
-      "published": true,
-      "tags": ["rebbe-stories", "farbrengen"]
-    },
     {
       "id": "zerizus-miracle",
       "title": "The zerizus miracle",

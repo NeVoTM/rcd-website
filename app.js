@@ -26,12 +26,12 @@
   }
 
   function renderThumb(clip, autoplay) {
-    const url = clipUrl(clip);
-    if (!url) return '<div class="clip-thumb"></div>';
     if (isVideoFile(clip)) {
+      const url = clipUrl(clip);
       return `<div class="clip-thumb"><video src="${url}" muted playsinline ${autoplay ? 'autoplay loop' : 'preload="metadata"'}></video></div>`;
     }
-    return `<div class="clip-thumb"><iframe src="${url}" title="${escapeAttr(clip.title)}" loading="lazy" allowfullscreen></iframe></div>`;
+    const poster = data.heroPortrait || (data.portraits && data.portraits[0]) || '';
+    return `<div class="clip-thumb clip-thumb-poster"${poster ? ` style="background-image:url('${poster}')"` : ''}></div>`;
   }
 
   function escapeAttr(s) {
@@ -68,8 +68,8 @@
     const url = clipUrl(clip);
     if (isVideoFile(clip)) {
       el.innerHTML = `<div class="video-wrap vertical"><video src="${url}" controls playsinline poster="${data.heroPortrait || ''}"></video></div>`;
-    } else if (clip.youtubeId) {
-      el.innerHTML = `<div class="video-wrap"><iframe src="https://www.youtube.com/embed/${clip.youtubeId}" title="${escapeAttr(clip.title)}" allowfullscreen loading="lazy"></iframe></div>`;
+    } else {
+      el.innerHTML = '<p>Featured clip coming soon.</p>';
     }
   }
 
@@ -100,8 +100,6 @@
     let player = '';
     if (isVideoFile(clip)) {
       player = `<div class="video-wrap vertical"><video src="/public/clips/${clip.file}" controls autoplay playsinline></video></div>`;
-    } else if (clip.youtubeId) {
-      player = `<div class="video-wrap vertical"><iframe src="https://www.youtube.com/embed/${clip.youtubeId}" title="${escapeAttr(clip.title)}" allowfullscreen></iframe></div>`;
     }
     el.innerHTML = `
       <h1>${clip.title}</h1>
