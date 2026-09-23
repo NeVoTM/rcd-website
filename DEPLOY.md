@@ -24,6 +24,7 @@ Render will issue SSL automatically once DNS propagates.
 | Originals | Google Drive `RCD/01-Originals/` |
 | Portraits | `RCD/02-Photos/portraits/` + site `public/images/portraits/` |
 | Edited clips | Drive `RCD/04-Edited-Backup/` + `public/clips/` + Render |
+| Transcripts | Drive `RCD/05-Transcripts/<title>/transcript.txt` (from `scripts/vtt_to_transcript.py`) |
 | Code | GitHub NeVoTM/rcd-website |
 
 ## Deploy
