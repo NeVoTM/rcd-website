@@ -17,7 +17,6 @@
 
   function clipUrl(clip) {
     if (clip.file) return `/public/clips/${clip.file}`;
-    if (clip.youtubeId) return `https://www.youtube.com/embed/${clip.youtubeId}`;
     return null;
   }
 
