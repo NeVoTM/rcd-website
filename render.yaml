@@ -2,6 +2,9 @@ services:
   - type: web
     name: rcd-website
     runtime: static
+    repo: https://github.com/NeVoTM/rcd-website
+    branch: main
+    autoDeploy: true
     buildCommand: echo "Static site"
     staticPublishPath: .
     routes:
