@@ -10,15 +10,15 @@ TRANSCRIPTS = ROOT / "data" / "transcripts"
 OUT = ROOT / "public" / "clips"
 
 try:
-    from deep_translator import GoogleTranslator
+    from translate_with_fallback import translate_text
 except ImportError:
-    GoogleTranslator = None
+    translate_text = None
 
 CLIP_SPECS = [
     {
         "id": "zerizus-miracle",
         "transcriptId": "accident-miracle",
-        "startSec": 215,
+        "startSec": 202,
         "durationSec": 44,
     },
     {
@@ -80,20 +80,13 @@ def write_vtt(path: Path, segments, lang_label: str):
 
 
 def translate_segments(segments, target: str):
-    if GoogleTranslator is None:
+    if translate_text is None:
         raise RuntimeError("Install deep-translator: pip install deep-translator")
-    translator = GoogleTranslator(source="en", target=target)
-    texts = [text for _, _, text in segments]
-    for attempt in range(6):
-        try:
-            translated_texts = translator.translate_batch(texts)
-            break
-        except Exception as exc:
-            if attempt == 5:
-                raise
-            wait = 3 * (2 ** attempt)
-            print(f"  retry batch {target} in {wait}s: {exc}")
-            time.sleep(wait)
+    translated_texts = []
+    for i, text in enumerate([t for _, _, t in segments]):
+        translated_texts.append(translate_text(text, target))
+        print(f"  {target} cue {i + 1}/{len(segments)}")
+        time.sleep(0.5)
     return [(start, end, txt) for (start, end, _), txt in zip(segments, translated_texts)]
 
 
@@ -101,10 +94,16 @@ def main():
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("--en-only", action="store_true", help="Skip ES/FR translation")
+    parser.add_argument("--clip-id", help="Only process this clip id")
     args = parser.parse_args()
 
     OUT.mkdir(parents=True, exist_ok=True)
-    for spec in CLIP_SPECS:
+    specs = CLIP_SPECS
+    if args.clip_id:
+        specs = [s for s in CLIP_SPECS if s["id"] == args.clip_id]
+        if not specs:
+            raise SystemExit(f"unknown clip id: {args.clip_id}")
+    for spec in specs:
         en_segments = segments_from_transcript(
             spec["transcriptId"], spec["startSec"], spec["durationSec"]
         )

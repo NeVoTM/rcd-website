@@ -8,32 +8,30 @@ ROOT = Path(__file__).resolve().parent.parent
 TRANSCRIPTS = ROOT / "data" / "transcripts"
 
 try:
-    from deep_translator import GoogleTranslator
+    from translate_with_fallback import translate_text as _translate_text
 except ImportError:
-    GoogleTranslator = None
+    _translate_text = None
 
 
 def translate_text(text: str, target: str) -> str:
     if not text.strip():
         return text
-    if GoogleTranslator is None:
+    if _translate_text is None:
         raise RuntimeError("Install deep-translator: pip install deep-translator")
-    translator = GoogleTranslator(source="en", target=target)
-    # Google Translate has length limits; chunk long lines.
     if len(text) <= 4500:
-        return translator.translate(text)
+        return _translate_text(text, target)
     parts = []
     chunk = ""
     for word in text.split():
         candidate = f"{chunk} {word}".strip()
         if len(candidate) > 4000:
-            parts.append(translator.translate(chunk))
+            parts.append(_translate_text(chunk, target))
             time.sleep(0.15)
             chunk = word
         else:
             chunk = candidate
     if chunk:
-        parts.append(translator.translate(chunk))
+        parts.append(_translate_text(chunk, target))
     return " ".join(parts)
 
 
@@ -51,7 +49,7 @@ def translate_transcript(path: Path, lang: str, lang_code: str, force: bool = Fa
         lines.append({"time": line["time"], "text": translated})
         if i % 10 == 0:
             print(f"  {path.stem}.{lang_code}: {i}/{len(data['lines'])}")
-        time.sleep(2.5)
+        time.sleep(0.75)
     out = {
         "id": data["id"],
         "title": title,
@@ -72,7 +70,7 @@ def main():
     parser.add_argument("--force", action="store_true", help="Overwrite existing translations")
     args = parser.parse_args()
 
-    if GoogleTranslator is None:
+    if _translate_text is None:
         raise SystemExit("pip install deep-translator")
     for path in sorted(TRANSCRIPTS.glob("*.json")):
         if path.name.count(".") > 1:
