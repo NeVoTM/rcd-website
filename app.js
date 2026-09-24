@@ -46,6 +46,61 @@
       .replace(/>/g, '&gt;');
   }
 
+  const SUBTITLE_LABELS = { en: 'English', es: 'Español', fr: 'Français' };
+
+  function pageSubtitleLang() {
+    const page = document.body.dataset.page;
+    if (page === 'es') return 'es';
+    if (page === 'fr') return 'fr';
+    const htmlLang = (document.documentElement.lang || 'en').slice(0, 2);
+    return ['en', 'es', 'fr'].includes(htmlLang) ? htmlLang : 'en';
+  }
+
+  function clipSubtitleLang(clip) {
+    const preferred = pageSubtitleLang();
+    const subs = clip.subtitles || {};
+    if (subs[preferred]) return preferred;
+    if (subs[clip.language]) return clip.language;
+    return subs.en ? 'en' : Object.keys(subs)[0] || 'en';
+  }
+
+  function renderSubtitleTracks(clip) {
+    const subs = clip.subtitles;
+    if (!subs) return '';
+    const defaultLang = clipSubtitleLang(clip);
+    return Object.entries(subs).map(([lang, file]) => {
+      const src = `/public/clips/${file}`;
+      const label = SUBTITLE_LABELS[lang] || lang;
+      const isDefault = lang === defaultLang;
+      return `<track kind="captions" src="${escapeAttr(src)}" srclang="${lang}" label="${escapeAttr(label)}"${isDefault ? ' default' : ''}>`;
+    }).join('');
+  }
+
+  function renderVideoPlayer(clip, opts) {
+    const url = clipUrl(clip);
+    if (!isVideoFile(clip) || !url) return '';
+    const attrs = [
+      `src="${escapeAttr(url)}"`,
+      'controls',
+      'playsinline',
+      'crossorigin="anonymous"',
+    ];
+    if (opts && opts.autoplay) attrs.push('autoplay');
+    if (opts && opts.poster) attrs.push(`poster="${escapeAttr(opts.poster)}"`);
+    const tracks = renderSubtitleTracks(clip);
+    const wrapClass = opts && opts.vertical ? 'video-wrap vertical' : 'video-wrap vertical';
+    return `<div class="${wrapClass}"><video ${attrs.join(' ')}>${tracks}</video></div>`;
+  }
+
+  function enableDefaultCaptions(video) {
+    if (!video || !video.textTracks) return;
+    const tracks = Array.from(video.textTracks);
+    const preferred = tracks.find(t => t.mode === 'showing')
+      || tracks.find(t => t.default)
+      || tracks[0];
+    tracks.forEach(t => { t.mode = t === preferred ? 'showing' : 'hidden'; });
+  }
+
   function renderClipCard(clip) {
     return `<a class="clip-card" href="/clip.html?id=${encodeURIComponent(clip.id)}">
       ${renderThumb(clip, false)}
@@ -73,9 +128,9 @@
       el.innerHTML = '<p>Featured clip coming soon.</p>';
       return;
     }
-    const url = clipUrl(clip);
     if (isVideoFile(clip)) {
-      el.innerHTML = `<div class="video-wrap vertical"><video src="${url}" controls playsinline poster="${data.heroPortrait || ''}"></video></div>`;
+      el.innerHTML = renderVideoPlayer(clip, { vertical: true, poster: data.heroPortrait || '' });
+      enableDefaultCaptions(el.querySelector('video'));
     } else {
       el.innerHTML = '<p>Featured clip coming soon.</p>';
     }
@@ -105,10 +160,7 @@
     document.title = `RCD | ${clip.title}`;
     const meta = qs('meta[name="description"]');
     if (meta) meta.content = clip.hook;
-    let player = '';
-    if (isVideoFile(clip)) {
-      player = `<div class="video-wrap vertical"><video src="/public/clips/${clip.file}" controls autoplay playsinline></video></div>`;
-    }
+    const player = isVideoFile(clip) ? renderVideoPlayer(clip, { vertical: true, autoplay: true }) : '';
     el.innerHTML = `
       <h1>${clip.title}</h1>
       <p class="lead">${clip.hook}</p>
@@ -117,6 +169,7 @@
         <a class="btn primary" href="/watch.html">More clips</a>
         <a class="btn" href="https://www.youtube.com/@RabbiDalfin" target="_blank" rel="noopener">RCD YouTube</a>
       </div>`;
+    enableDefaultCaptions(el.querySelector('video'));
   }
 
   function renderTranscriptLine(line) {

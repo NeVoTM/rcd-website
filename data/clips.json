@@ -33,6 +33,14 @@
       "sourceYoutube": "KTH1kN3lVGE",
       "youtubeId": "KTH1kN3lVGE",
       "file": "zerizus-miracle.mp4",
+      "transcriptId": "accident-miracle",
+      "transcriptStart": 219,
+      "transcriptDuration": 45,
+      "subtitles": {
+        "en": "zerizus-miracle.en.vtt",
+        "es": "zerizus-miracle.es.vtt",
+        "fr": "zerizus-miracle.fr.vtt"
+      },
       "published": true,
       "tags": ["rebbe-stories", "miracles"]
     },
@@ -44,6 +52,14 @@
       "sourceYoutube": "Aa9QMofyqbM",
       "youtubeId": "Aa9QMofyqbM",
       "file": "yud-tes-kislev.mp4",
+      "transcriptId": "litvak-becomes-a-chasid",
+      "transcriptStart": 90,
+      "transcriptDuration": 45,
+      "subtitles": {
+        "en": "yud-tes-kislev.en.vtt",
+        "es": "yud-tes-kislev.es.vtt",
+        "fr": "yud-tes-kislev.fr.vtt"
+      },
       "published": true,
       "tags": ["rebbe-stories", "chassidus"]
     }

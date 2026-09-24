@@ -133,6 +133,17 @@ section h2 { color: var(--navy); margin-bottom: 1rem; }
   border: 0;
 }
 .video-wrap.vertical { padding-bottom: 177%; max-width: 360px; margin: 0 auto; }
+.video-wrap video::cue {
+  background: rgba(26, 39, 68, 0.88);
+  color: #fff;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: clamp(0.85rem, 3.2vw, 1.05rem);
+  line-height: 1.35;
+  padding: 0.15em 0.4em;
+}
+.video-wrap video::-webkit-media-text-track-display {
+  transform: translateY(-0.5em);
+}
 .prose { max-width: 42rem; }
 .prose p { margin: 0 0 1rem; }
 .link-list { list-style: none; padding: 0; }
