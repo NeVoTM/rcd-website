@@ -37,10 +37,10 @@ def translate_text(text: str, target: str) -> str:
     return " ".join(parts)
 
 
-def translate_transcript(path: Path, lang: str, lang_code: str):
+def translate_transcript(path: Path, lang: str, lang_code: str, force: bool = False):
     data = json.loads(path.read_text(encoding="utf-8"))
     out_path = path.with_suffix(f".{lang_code}.json")
-    if out_path.exists():
+    if out_path.exists() and not force:
         print(f"skip existing {out_path.name}")
         return
     title = translate_text(data["title"], lang)
@@ -51,7 +51,7 @@ def translate_transcript(path: Path, lang: str, lang_code: str):
         lines.append({"time": line["time"], "text": translated})
         if i % 10 == 0:
             print(f"  {path.stem}.{lang_code}: {i}/{len(data['lines'])}")
-        time.sleep(0.6)
+        time.sleep(2.5)
     out = {
         "id": data["id"],
         "title": title,
@@ -65,14 +65,23 @@ def translate_transcript(path: Path, lang: str, lang_code: str):
 
 
 def main():
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Translate transcript JSON to ES/FR")
+    parser.add_argument("--id", help="Only translate this transcript id (e.g. accident-miracle)")
+    parser.add_argument("--force", action="store_true", help="Overwrite existing translations")
+    args = parser.parse_args()
+
     if GoogleTranslator is None:
         raise SystemExit("pip install deep-translator")
     for path in sorted(TRANSCRIPTS.glob("*.json")):
         if path.name.count(".") > 1:
             continue
+        if args.id and path.stem != args.id:
+            continue
         print(path.name)
-        translate_transcript(path, "es", "es")
-        translate_transcript(path, "fr", "fr")
+        translate_transcript(path, "es", "es", force=args.force)
+        translate_transcript(path, "fr", "fr", force=args.force)
     return 0
 
 

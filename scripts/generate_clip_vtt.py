@@ -2,56 +2,30 @@
 """Generate WebVTT subtitle files for RCD clips from transcript JSON."""
 import json
 import re
+import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 TRANSCRIPTS = ROOT / "data" / "transcripts"
 OUT = ROOT / "public" / "clips"
 
+try:
+    from deep_translator import GoogleTranslator
+except ImportError:
+    GoogleTranslator = None
+
 CLIP_SPECS = [
     {
         "id": "zerizus-miracle",
         "transcriptId": "accident-miracle",
-        "startSec": 219,
-        "durationSec": 45,
-        "translations": {
-            "es": [
-                (0.0, 10.0, "Las lecciones del episodio — la grandeza del celo, el zerizut, en todos los asuntos de bondad."),
-                (10.0, 20.0, "No solo en asuntos sagrados: hay que hacerlo con gran celo, gran entusiasmo, y no procrastinar."),
-                (20.0, 30.0, "No dijo cómo llegó a determinar que esa era la lección, pero recuerdo haberle escrito."),
-                (30.0, 40.0, "El conductor iba tan rápido — y en ese momento comprendí la lección del zerizut."),
-                (40.0, 45.0, "Celo en la santidad — prontitud sagrada en todos los asuntos de bondad."),
-            ],
-            "fr": [
-                (0.0, 10.0, "Les leçons de l'épisode — la grandeur de l'empressement, le zerizut, dans toutes les choses de bonté."),
-                (10.0, 20.0, "Pas seulement dans les affaires sacrées : il faut le faire avec un grand zèle, un grand enthousiasme, sans procrastiner."),
-                (20.0, 30.0, "Il n'a pas dit comment il a déterminé que c'était la leçon, mais je me souviens lui avoir écrit."),
-                (30.0, 40.0, "Le conducteur roulait si vite — et à ce moment j'ai compris la leçon du zerizut."),
-                (40.0, 45.0, "Empressement dans la sainteté — alacrité sacrée dans toutes les choses de bonté."),
-            ],
-        },
+        "startSec": 215,
+        "durationSec": 44,
     },
     {
         "id": "yud-tes-kislev",
         "transcriptId": "litvak-becomes-a-chasid",
         "startSec": 90,
         "durationSec": 45,
-        "translations": {
-            "es": [
-                (0.0, 8.0, "Es un libro legítimo — no es magia ni algo sin fundamento."),
-                (8.0, 16.0, "Ha sido aceptado, y el Rebe lo mencionó muchas veces, especialmente en los fabrengens de Yud Tes Kislev."),
-                (16.0, 28.0, "Escribe allí que hoy es un día de buenas noticias — basura significa noticias."),
-                (28.0, 38.0, "Yud Tes Kislev es un día de buenas noticias, escrito mucho antes de que el Alter Rebe fuera liberado."),
-                (38.0, 45.0, "Hay mucho de qué hablar — es un pequeño fabrengen y tenemos poco tiempo."),
-            ],
-            "fr": [
-                (0.0, 8.0, "C'est un livre légitime — pas de la magie ni du vent."),
-                (8.0, 16.0, "Il a été accepté, et le Rebbe l'a mentionné souvent, surtout lors des fabrengens de Yud Tes Kislev."),
-                (16.0, 28.0, "Il y est écrit qu'aujourd'hui est un jour de bonnes nouvelles — basura signifie nouvelles."),
-                (28.0, 38.0, "Yud Tes Kislev est un jour de bonnes nouvelles, écrit bien avant la libération de l'Alter Rebbe."),
-                (38.0, 45.0, "Il y a tant à dire — c'est un petit fabrengen et nous avons peu de temps."),
-            ],
-        },
     },
 ]
 
@@ -105,6 +79,24 @@ def write_vtt(path: Path, segments, lang_label: str):
     path.write_text("\n".join(lines), encoding="utf-8")
 
 
+def translate_segments(segments, target: str):
+    if GoogleTranslator is None:
+        raise RuntimeError("Install deep-translator: pip install deep-translator")
+    translator = GoogleTranslator(source="en", target=target)
+    texts = [text for _, _, text in segments]
+    for attempt in range(6):
+        try:
+            translated_texts = translator.translate_batch(texts)
+            break
+        except Exception as exc:
+            if attempt == 5:
+                raise
+            wait = 3 * (2 ** attempt)
+            print(f"  retry batch {target} in {wait}s: {exc}")
+            time.sleep(wait)
+    return [(start, end, txt) for (start, end, _), txt in zip(segments, translated_texts)]
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     for spec in CLIP_SPECS:
@@ -113,7 +105,8 @@ def main():
         )
         write_vtt(OUT / f"{spec['id']}.en.vtt", en_segments, "en")
         for lang in ("es", "fr"):
-            write_vtt(OUT / f"{spec['id']}.{lang}.vtt", spec["translations"][lang], lang)
+            lang_segments = translate_segments(en_segments, lang)
+            write_vtt(OUT / f"{spec['id']}.{lang}.vtt", lang_segments, lang)
         print(f"{spec['id']}: {len(en_segments)} EN cues, ES/FR translated")
     return 0
 
