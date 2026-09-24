@@ -51,12 +51,45 @@
 
   const SUBTITLE_LABELS = { en: 'English', es: 'Español', fr: 'Français' };
 
+  const CLIP_I18N = {
+    'zerizus-miracle': {
+      es: { title: 'El milagro del zerizut', hook: 'Cuando la urgencia encuentra la fe' },
+      fr: { title: 'Le miracle du zerizut', hook: 'Quand l\'urgence rencontre la foi' },
+    },
+    'yud-tes-kislev': {
+      es: { title: 'Yud Tes Kislev', hook: 'Luz en el exilio — una historia del Rebe' },
+      fr: { title: 'Yud Tes Kislev', hook: 'Lumière en exil — une histoire du Rebbe' },
+    },
+  };
+
+  const LANG_TRANSCRIPTS = {
+    es: [
+      { id: 'accident-miracle', title: 'Milagro del accidente', clipId: 'zerizus-miracle' },
+      { id: 'litvak-becomes-a-chasid', title: 'El litvak se convierte en jasíd', clipId: 'yud-tes-kislev' },
+    ],
+    fr: [
+      { id: 'accident-miracle', title: 'Miracle de l\'accident', clipId: 'zerizus-miracle' },
+      { id: 'litvak-becomes-a-chasid', title: 'Le Litvak devient hassid', clipId: 'yud-tes-kislev' },
+    ],
+  };
+
   function pageSubtitleLang() {
+    const param = new URLSearchParams(location.search).get('lang');
+    if (param && ['en', 'es', 'fr'].includes(param)) return param;
     const page = document.body.dataset.page;
     if (page === 'es') return 'es';
     if (page === 'fr') return 'fr';
     const htmlLang = (document.documentElement.lang || 'en').slice(0, 2);
     return ['en', 'es', 'fr'].includes(htmlLang) ? htmlLang : 'en';
+  }
+
+  function transcriptLang() {
+    return pageSubtitleLang();
+  }
+
+  function transcriptFileUrl(id, lang) {
+    if (lang === 'en') return `/data/transcripts/${encodeURIComponent(id)}.json`;
+    return `/data/transcripts/${encodeURIComponent(id)}.${lang}.json`;
   }
 
   function clipSubtitleLang(clip) {
@@ -95,19 +128,45 @@
     return `<div class="${wrapClass}"><video ${attrs.join(' ')}>${tracks}</video></div>`;
   }
 
-  function enableDefaultCaptions(video) {
+  function enableDefaultCaptions(video, clip) {
     if (!video || !video.textTracks) return;
-    const tracks = Array.from(video.textTracks);
-    const preferred = tracks.find(t => t.mode === 'showing')
-      || tracks.find(t => t.default)
-      || tracks[0];
-    tracks.forEach(t => { t.mode = t === preferred ? 'showing' : 'hidden'; });
+    const lang = clip ? clipSubtitleLang(clip) : pageSubtitleLang();
+    function apply() {
+      const tracks = Array.from(video.textTracks);
+      const preferred = tracks.find(t => t.language === lang)
+        || tracks.find(t => t.language === 'en')
+        || tracks.find(t => t.default)
+        || tracks[0];
+      tracks.forEach(t => { t.mode = t === preferred ? 'showing' : 'hidden'; });
+    }
+    apply();
+    video.querySelectorAll('track').forEach(trackEl => {
+      trackEl.addEventListener('load', apply);
+    });
+    video.textTracks.addEventListener('addtrack', apply);
+  }
+
+  function clipDisplay(clip) {
+    const lang = pageSubtitleLang();
+    const i18n = CLIP_I18N[clip.id] && CLIP_I18N[clip.id][lang];
+    return {
+      title: (i18n && i18n.title) || clip.title,
+      hook: (i18n && i18n.hook) || clip.hook,
+    };
+  }
+
+  function clipPageHref(clip) {
+    const lang = pageSubtitleLang();
+    let href = `/clip.html?id=${encodeURIComponent(clip.id)}`;
+    if (lang !== 'en') href += `&lang=${lang}`;
+    return href;
   }
 
   function renderClipCard(clip) {
-    return `<a class="clip-card" href="/clip.html?id=${encodeURIComponent(clip.id)}">
+    const { title, hook } = clipDisplay(clip);
+    return `<a class="clip-card" href="${clipPageHref(clip)}">
       ${renderThumb(clip, false)}
-      <div class="clip-body"><h3>${clip.title}</h3><p>${clip.hook}</p></div>
+      <div class="clip-body"><h3>${escapeHtml(title)}</h3><p>${escapeHtml(hook)}</p></div>
     </a>`;
   }
 
@@ -133,7 +192,7 @@
     }
     if (isVideoFile(clip)) {
       el.innerHTML = renderVideoPlayer(clip, { vertical: true, poster: data.heroPortrait || '' });
-      enableDefaultCaptions(el.querySelector('video'));
+      enableDefaultCaptions(el.querySelector('video'), clip);
     } else {
       el.innerHTML = '<p>Featured clip coming soon.</p>';
     }
@@ -155,38 +214,89 @@
   function mountClipPage(el) {
     if (!el) return;
     const id = new URLSearchParams(location.search).get('id') || data.featuredClipId;
+    const lang = pageSubtitleLang();
     const clip = publishedClips().find(c => c.id === id);
     if (!clip) {
       el.innerHTML = '<p>Clip not found.</p>';
       return;
     }
-    document.title = `RCD | ${clip.title}`;
+    const { title, hook } = clipDisplay(clip);
+    document.title = `RCD | ${title}`;
     const meta = qs('meta[name="description"]');
-    if (meta) meta.content = clip.hook;
+    if (meta) meta.content = hook;
     const player = isVideoFile(clip) ? renderVideoPlayer(clip, { vertical: true, autoplay: true }) : '';
+    const backHref = lang === 'es' ? '/es.html' : lang === 'fr' ? '/fr.html' : '/watch.html';
+    const backLabel = lang === 'es' ? 'Más clipes' : lang === 'fr' ? 'Plus de clips' : 'More clips';
+    const transcriptBtn = clip.transcriptId
+      ? `<a class="btn" href="${transcriptListHref(clip.transcriptId)}">${lang === 'es' ? 'Transcripción' : lang === 'fr' ? 'Transcription' : 'Transcript'}</a>`
+      : '';
     el.innerHTML = `
       <div class="clip-page-header">
-        <h1>${clip.title}</h1>
-        <p class="lead">${clip.hook}</p>
+        <h1>${escapeHtml(title)}</h1>
+        <p class="lead">${escapeHtml(hook)}</p>
       </div>
       ${player}
       <div class="cta-row">
-        <a class="btn primary" href="/watch.html">More clips</a>
+        <a class="btn primary" href="${backHref}">${backLabel}</a>
+        ${transcriptBtn}
         <a class="btn" href="https://www.youtube.com/@RabbiDalfin" target="_blank" rel="noopener">RCD YouTube</a>
       </div>`;
-    enableDefaultCaptions(el.querySelector('video'));
+    enableDefaultCaptions(el.querySelector('video'), clip);
+  }
+
+  function renderTranscriptLangSwitcher(id, activeLang) {
+    const langs = [
+      { code: 'en', label: 'English' },
+      { code: 'es', label: 'Español' },
+      { code: 'fr', label: 'Français' },
+    ];
+    return `<nav class="transcript-lang-switch" aria-label="Transcript language">
+      ${langs.map(l => {
+        const href = l.code === 'en'
+          ? `/transcript.html?id=${encodeURIComponent(id)}`
+          : `/transcript.html?id=${encodeURIComponent(id)}&lang=${l.code}`;
+        const active = l.code === activeLang ? ' is-active' : '';
+        return `<a class="transcript-lang-btn${active}" href="${href}" hreflang="${l.code}">${l.label}</a>`;
+      }).join('')}
+    </nav>`;
   }
 
   function renderTranscriptLine(line) {
     return `<div class="transcript-line"><time class="transcript-time">${escapeHtml(line.time)}</time><p class="transcript-text">${escapeHtml(line.text)}</p></div>`;
   }
 
+  function transcriptListHref(id) {
+    const lang = transcriptLang();
+    if (lang === 'en') return `/transcript.html?id=${encodeURIComponent(id)}`;
+    return `/transcript.html?id=${encodeURIComponent(id)}&lang=${lang}`;
+  }
+
+  function mountLangTranscriptList(el) {
+    if (!el) return;
+    const lang = pageSubtitleLang();
+    const items = LANG_TRANSCRIPTS[lang];
+    if (!items || !items.length) return;
+    const heading = lang === 'es' ? 'Transcripciones' : 'Transcriptions';
+    const watchClip = lang === 'es' ? 'Ver clip' : 'Voir le clip';
+    el.innerHTML = `
+      <h2>${heading}</h2>
+      <ul class="link-list transcript-list">${items.map(t =>
+        `<li><a href="${transcriptListHref(t.id)}">${escapeHtml(t.title)}</a><span class="transcript-meta"><a href="${clipPageHref({ id: t.clipId })}">${watchClip}</a></span></li>`
+      ).join('')}</ul>`;
+  }
+
   function mountTranscriptList(el) {
     if (!el || !transcriptsIndex) return;
     const items = transcriptsIndex.transcripts || [];
+    const lang = transcriptLang();
+    const langNote = lang === 'es'
+      ? ' · Español disponible'
+      : lang === 'fr'
+        ? ' · Français disponible'
+        : ' · English · Español · Français';
     el.innerHTML = items.length
       ? `<ul class="link-list transcript-list">${items.map(t =>
-          `<li><a href="/transcript.html?id=${encodeURIComponent(t.id)}">${t.title}</a><span class="transcript-meta">${t.lineCount} segments · <a href="${t.youtubeUrl}" target="_blank" rel="noopener">YouTube</a></span></li>`
+          `<li><a href="${transcriptListHref(t.id)}">${t.title}</a><span class="transcript-meta">${t.lineCount} segments${langNote} · <a href="${t.youtubeUrl}" target="_blank" rel="noopener">YouTube</a></span></li>`
         ).join('')}</ul>`
       : '<p>No transcripts available yet.</p>';
   }
@@ -350,23 +460,43 @@
       el.innerHTML = '<p>Transcript not found.</p>';
       return;
     }
+    const lang = transcriptLang();
+    const langLabels = { en: 'English', es: 'Español', fr: 'Français' };
     el.innerHTML = '<p class="transcript-loading">Loading transcript…</p>';
-    fetch(`/data/transcripts/${encodeURIComponent(id)}.json`)
-      .then(r => r.json())
+    fetch(transcriptFileUrl(id, lang))
+      .then(r => {
+        if (!r.ok) throw new Error('missing');
+        return r.json();
+      })
       .then(t => {
-        document.title = `RCD | ${t.title} — Transcript`;
+        document.title = `RCD | ${t.title} — Transcript (${langLabels[lang] || lang})`;
         const desc = qs('meta[name="description"]');
-        if (desc) desc.content = `Full transcript: ${t.title}`;
+        if (desc) desc.content = `Full transcript: ${t.title} (${langLabels[lang] || lang})`;
+        const lead = lang === 'es'
+          ? 'Transcripción completa con marcas de tiempo.'
+          : lang === 'fr'
+            ? 'Transcription complète avec horodatage.'
+            : 'Word-for-word transcript with timestamps.';
+        const allHref = lang === 'es' ? '/es.html' : lang === 'fr' ? '/fr.html' : '/transcripts.html';
+        const allLabel = lang === 'es' ? 'Todos los clipes' : lang === 'fr' ? 'Tous les clips' : 'All transcripts';
+        const watchLabel = lang === 'es' ? 'Ver en YouTube' : lang === 'fr' ? 'Voir sur YouTube' : 'Watch on YouTube';
         el.innerHTML = `
-          <h1>${t.title}</h1>
-          <p class="lead">Word-for-word transcript with timestamps.</p>
+          ${renderTranscriptLangSwitcher(id, lang)}
+          <h1>${escapeHtml(t.title)}</h1>
+          <p class="lead">${lead}</p>
           <div class="cta-row">
-            <a class="btn primary" href="${t.youtubeUrl}" target="_blank" rel="noopener">Watch on YouTube</a>
-            <a class="btn" href="/transcripts.html">All transcripts</a>
+            <a class="btn primary" href="${t.youtubeUrl}" target="_blank" rel="noopener">${watchLabel}</a>
+            <a class="btn" href="${allHref}">${allLabel}</a>
           </div>
           <div class="transcript-body">${(t.lines || []).map(renderTranscriptLine).join('')}</div>`;
       })
-      .catch(() => { el.innerHTML = '<p>Failed to load transcript.</p>'; });
+      .catch(() => {
+        if (lang !== 'en') {
+          location.replace(`/transcript.html?id=${encodeURIComponent(id)}`);
+          return;
+        }
+        el.innerHTML = '<p>Failed to load transcript.</p>';
+      });
   }
 
   function initMobileNav() {
@@ -415,6 +545,7 @@
     mountFeaturedPlayer(qs('[data-featured-player]'), data.featuredClipId);
     mountClipPage(qs('[data-clip-player]'));
     mountTranscriptList(qs('[data-transcript-list]'));
+    mountLangTranscriptList(qs('[data-lang-transcripts]'));
     mountTranscriptPage(qs('[data-transcript-view]'));
     mountBooksCatalog();
     mountProductPage(qs('[data-product-detail]'));

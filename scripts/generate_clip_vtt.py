@@ -20,7 +20,7 @@ CLIP_SPECS = [
                 (10.0, 20.0, "No solo en asuntos sagrados: hay que hacerlo con gran celo, gran entusiasmo, y no procrastinar."),
                 (20.0, 30.0, "No dijo cómo llegó a determinar que esa era la lección, pero recuerdo haberle escrito."),
                 (30.0, 40.0, "El conductor iba tan rápido — y en ese momento comprendí la lección del zerizut."),
-                (40.0, 45.0, "Celo en la santidad — alacrity sagrada en todos los asuntos de bondad."),
+                (40.0, 45.0, "Celo en la santidad — prontitud sagrada en todos los asuntos de bondad."),
             ],
             "fr": [
                 (0.0, 10.0, "Les leçons de l'épisode — la grandeur de l'empressement, le zerizut, dans toutes les choses de bonté."),
