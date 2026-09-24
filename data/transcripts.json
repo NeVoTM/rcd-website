@@ -31,7 +31,9 @@
       "youtubeUrl": "https://youtu.be/DPNnTyYZn3k",
       "lineCount": 406,
       "languages": [
-        "en"
+        "en",
+        "es",
+        "fr"
       ]
     },
     {
@@ -41,7 +43,9 @@
       "youtubeUrl": "https://youtu.be/tE9yylI_hmA",
       "lineCount": 33,
       "languages": [
-        "en"
+        "en",
+        "es",
+        "fr"
       ]
     }
   ]
