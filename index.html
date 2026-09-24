@@ -5,14 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>RCD | Rabbi Chaim Dalfin — Lubavitch · Rebbe Stories</title>
   <meta name="description" content="Rebbe stories and Chassidus by Rabbi Chaim Dalfin. Watch clips, explore books, book a farbrengen.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body data-page="home">
   <header class="site-header">
-    <div class="wrap">
-      <a class="logo" href="/">RCD</a>
-      <p class="tagline">Rabbi Chaim Dalfin · Lubavitch · Rebbe Stories</p>
-      <nav>
+    <div class="wrap header-inner">
+      <div class="header-brand">
+        <a class="logo" href="/">RCD</a>
+        <p class="tagline">Rabbi Chaim Dalfin · Lubavitch · Rebbe Stories</p>
+      </div>
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="site-nav">
         <a href="/watch.html">Watch</a>
         <a href="/transcripts.html">Transcripts</a>
         <a href="/rebbe.html">The Rebbe</a>
@@ -25,8 +32,9 @@
     </div>
   </header>
   <main class="wrap">
-    <section class="hero has-portrait">
-      <div>
+    <section class="page-hero home-hero has-portrait">
+      <div class="page-hero-inner">
+        <p class="hero-eyebrow">Rabbi Chaim Dalfin</p>
         <h1>Stories that move you. Wisdom that stays.</h1>
         <p class="lead">25 years at the Rebbe&apos;s farbrengens. 60+ books. Turning Chassidus into courage for real life.</p>
         <div class="cta-row">
@@ -37,10 +45,12 @@
       <img class="hero-portrait" data-hero-portrait src="" alt="Rabbi Chaim Dalfin">
     </section>
     <section>
+      <span class="section-label">Featured</span>
       <h2>Featured Clip</h2>
       <div data-featured-player></div>
     </section>
     <section>
+      <span class="section-label">Watch</span>
       <h2>Latest Clips</h2>
       <div class="clip-grid" data-clip-grid></div>
     </section>

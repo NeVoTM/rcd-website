@@ -5,14 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>RCD | Watch — Rabbi Chaim Dalfin Clips</title>
   <meta name="description" content="Watch Rebbe stories and farbrengen clips by Rabbi Chaim Dalfin.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body data-page="watch">
   <header class="site-header">
-    <div class="wrap">
-      <a class="logo" href="/">RCD</a>
-      <p class="tagline">Rabbi Chaim Dalfin · Lubavitch · Rebbe Stories</p>
-      <nav>
+    <div class="wrap header-inner">
+      <div class="header-brand">
+        <a class="logo" href="/">RCD</a>
+        <p class="tagline">Rabbi Chaim Dalfin · Lubavitch · Rebbe Stories</p>
+      </div>
+      <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="site-nav">
         <a href="/watch.html">Watch</a>
         <a href="/transcripts.html">Transcripts</a>
         <a href="/rebbe.html">The Rebbe</a>
@@ -24,14 +31,17 @@
       </nav>
     </div>
   </header>
-  <main class="wrap">
-    <section class="hero">
+  <div class="page-banner">
+    <div class="wrap">
+      <span class="section-label">Video Library</span>
       <h1>Watch RCD</h1>
       <p class="lead">Rebbe stories, farbrengen moments, and Chassidus — edited clips from Rabbi Chaim Dalfin.</p>
       <div class="cta-row">
-        <a class="btn" href="https://www.youtube.com/@RabbiDalfin" target="_blank" rel="noopener">Full talks on YouTube</a>
+        <a class="btn primary" href="https://www.youtube.com/@RabbiDalfin" target="_blank" rel="noopener">Full talks on YouTube</a>
       </div>
-    </section>
+    </div>
+  </div>
+  <main class="wrap">
     <section>
       <div class="clip-grid" data-clip-grid></div>
     </section>
