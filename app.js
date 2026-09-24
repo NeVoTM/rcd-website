@@ -91,7 +91,7 @@
     if (opts && opts.autoplay) attrs.push('autoplay');
     if (opts && opts.poster) attrs.push(`poster="${escapeAttr(opts.poster)}"`);
     const tracks = renderSubtitleTracks(clip);
-    const wrapClass = opts && opts.vertical ? 'video-wrap vertical' : 'video-wrap vertical';
+    const wrapClass = 'video-wrap';
     return `<div class="${wrapClass}"><video ${attrs.join(' ')}>${tracks}</video></div>`;
   }
 
