@@ -1,0 +1,17 @@
+V.FWCc9x .JFlCG_{font-size:20px!important;padding:32px 44px 44px}.hnxUtZ:hover{text-decoration:underline}.txtqbB{--transparent:0,0,0,0;background-color:transparent;background-color:rgba(var(--gallery_loadMoreButtonbackgroundColor,var(--transparent)));border:none;border-color:rgba(var(--gallery_loadMoreButtonborderColor));border-radius:var(--gallery_loadMoreButtoncornersRadius);border-style:solid;border-width:calc(var(--loadMoreButtonBorderWidth)*1px);color:inherit;color:rgba(var(--gallery_loadMoreButtontextColor));cursor:pointer;display:block;font:inherit;font:var(--gallery_loadMoreButtontextF
+
+===
+
+underline}.txtqbB{--transparent:0,0,0,0;background-color:transparent;background-color:rgba(var(--gallery_loadMoreButtonbackgroundColor,var(--transparent)));border:none;border-color:rgba(var(--gallery_loadMoreButtonborderColor));border-radius:var(--gallery_loadMoreButtoncornersRadius);border-style:solid;border-width:calc(var(--loadMoreButtonBorderWidth)*1px);color:inherit;color:rgba(var(--gallery_loadMoreButtontextColor));cursor:pointer;display:block;font:inherit;font:var(--gallery_loadMoreButtontextFont,var(--wix-font-Body-M));margin:25px auto;padding:0;padding:10px 20px;-webkit-text-decoratio
+
+===
+
+:transparent;background-color:rgba(var(--gallery_loadMoreButtonbackgroundColor,var(--transparent)));border:none;border-color:rgba(var(--gallery_loadMoreButtonborderColor));border-radius:var(--gallery_loadMoreButtoncornersRadius);border-style:solid;border-width:calc(var(--loadMoreButtonBorderWidth)*1px);color:inherit;color:rgba(var(--gallery_loadMoreButtontextColor));cursor:pointer;display:block;font:inherit;font:var(--gallery_loadMoreButtontextFont,var(--wix-font-Body-M));margin:25px auto;padding:0;padding:10px 20px;-webkit-text-decoration:var(--gallery_loadMoreButtontextFont-text-decoration,v
+
+===
+
+dColor,var(--transparent)));border:none;border-color:rgba(var(--gallery_loadMoreButtonborderColor));border-radius:var(--gallery_loadMoreButtoncornersRadius);border-style:solid;border-width:calc(var(--loadMoreButtonBorderWidth)*1px);color:inherit;color:rgba(var(--gallery_loadMoreButtontextColor));cursor:pointer;display:block;font:inherit;font:var(--gallery_loadMoreButtontextFont,var(--wix-font-Body-M));margin:25px auto;padding:0;padding:10px 20px;-webkit-text-decoration:var(--gallery_loadMoreButtontextFont-text-decoration,var(--wix-font-Body-M-text-decoration));text-decoration:var(--gallery_loa
+
+===
+
+_loadMoreButtonborderColor));border-radius:var(--gallery_loadMoreButtoncornersRadius);border-style:solid;border-width:calc(var(--loadMoreButtonBorderWidth)*1px);color:inherit;color:rgba(var(--gallery_loadMoreButtontextColor));cursor:pointer;display:block;font:inherit;font:var(--gallery_loadMoreButtontextFont,var(--wix-font-Body-M));margin:25px auto;padding:0;padding:10px 20px;-webkit-text-decoration:var(--gallery_loadMoreButtontextFont-text-decoration,var(--wix-font-Body-M-text-decoration));text-decoration:var(--gallery_loadMoreButtontextFont-text-decoration,var(--wix-font-Body-M-text-decorati
