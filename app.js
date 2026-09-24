@@ -244,12 +244,15 @@
     enableDefaultCaptions(el.querySelector('video'), clip);
   }
 
+  function transcriptLanguages(id) {
+    const meta = (transcriptsIndex && transcriptsIndex.transcripts || []).find(t => t.id === id);
+    const langs = meta && meta.languages;
+    return langs && langs.length ? langs : ['en', 'es', 'fr'];
+  }
+
   function renderTranscriptLangSwitcher(id, activeLang) {
-    const langs = [
-      { code: 'en', label: 'English' },
-      { code: 'es', label: 'Español' },
-      { code: 'fr', label: 'Français' },
-    ];
+    const labels = { en: 'English', es: 'Español', fr: 'Français' };
+    const langs = transcriptLanguages(id).map(code => ({ code, label: labels[code] || code }));
     return `<nav class="transcript-lang-switch" aria-label="Transcript language">
       ${langs.map(l => {
         const href = l.code === 'en'

@@ -5,28 +5,32 @@
       "title": "Accident Miracle",
       "youtubeId": "KTH1kN3lVGE",
       "youtubeUrl": "https://youtu.be/KTH1kN3lVGE",
-      "lineCount": 52
+      "lineCount": 52,
+      "languages": ["en", "es", "fr"]
     },
     {
       "id": "litvak-becomes-a-chasid",
       "title": "Litvak becomes a Chasid",
       "youtubeId": "Aa9QMofyqbM",
       "youtubeUrl": "https://youtu.be/Aa9QMofyqbM",
-      "lineCount": 361
+      "lineCount": 361,
+      "languages": ["en", "es", "fr"]
     },
     {
       "id": "nigun-therapy",
       "title": "Nigun Therapy",
       "youtubeId": "DPNnTyYZn3k",
       "youtubeUrl": "https://youtu.be/DPNnTyYZn3k",
-      "lineCount": 317
+      "lineCount": 317,
+      "languages": ["en"]
     },
     {
       "id": "rebbe-in-mikva",
       "title": "Rebbe in Mikva",
       "youtubeId": "tE9yylI_hmA",
       "youtubeUrl": "https://youtu.be/tE9yylI_hmA",
-      "lineCount": 39
+      "lineCount": 39,
+      "languages": ["en"]
     }
   ]
 }
