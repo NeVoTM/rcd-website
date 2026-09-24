@@ -1,0 +1,275 @@
+{
+  "source": "https://www.rabbidalfin.com/shop",
+  "scrapedAt": "2026-09-23",
+  "categories": [
+    "General"
+  ],
+  "products": [
+    {
+      "id": "chabad-and-aguda",
+      "title": "Chabad and Aguda",
+      "price": 40.0,
+      "currency": "USD",
+      "category": "General",
+      "tags": [
+        "New Book - Limited Print"
+      ],
+      "image": "2603d3_1f4a7dd0d5c4427c89cfbcc99aa7e01b~mv2.jpg",
+      "description": "",
+      "format": "book",
+      "purchaseUrl": "https://www.rabbidalfin.com/product-page/chabad-and-aguda",
+      "sourceId": "b7654215-74f4-e373-cd73-5db14e6e7b86"
+    },
+    {
+      "id": "chabad-and-presidents",
+      "title": "Chabad and Presidents",
+      "price": 40.0,
+      "currency": "USD",
+      "category": "General",
+      "tags": [
+        "New and v limited quantity"
+      ],
+      "image": "2603d3_0e987b9bd7a74b37a52e69fe4f34aef6~mv2.jpg",
+      "description": "",
+      "format": "book",
+      "purchaseUrl": "https://www.rabbidalfin.com/product-page/chabad-and-presidents",
+      "sourceId": "b146ef69-83d3-7532-2ff6-30a8f43ad9ed"
+    },
+    {
+      "id": "chabad-and-rabbis",
+      "title": "Chabad and Rabbis",
+      "price": 40.0,
+      "currency": "USD",
+      "category": "General",
+      "tags": [
+        "New - Limited Print"
+      ],
+      "image": "2603d3_e9afba820bfd40e3988de71c3c99f5a3~mv2.jpg",
+      "description": "",
+      "format": "book",
+      "purchaseUrl": "https://www.rabbidalfin.com/product-page/chabad-and-rabbis",
+      "sourceId": "d4a37f54-5c08-77cb-d68e-581a4ad5ddb8"
+    },
+    {
+      "id": "chabad-and-yeshiva-university",
+      "title": "Chabad and Yeshiva University",
+      "price": 50.0,
+      "currency": "USD",
+      "category": "General",
+      "tags": [
+        "New - Limited Print"
+      ],
+      "image": "2603d3_4219cdde04db4a0082632bea3f0106fa~mv2.jpg",
+      "description": "",
+      "format": "book",
+      "purchaseUrl": "https://www.rabbidalfin.com/product-page/chabad-and-yeshiva-university",
+      "sourceId": "df31e49f-d690-7339-36e9-f96318c913da"
+    },
+    {
+      "id": "chabad-heroes",
+      "title": "Chabad Heroes",
+      "price": 40.0,
+      "currency": "USD",
+      "category": "General",
+      "tags": [
+        "New Book - Introductry Price"
+      ],
+      "image": "2603d3_64785ff667cf440aae1786d34d9ed747~mv2.jpg",
+      "description": "",
+      "format": "book",
+      "purchaseUrl": "https://www.rabbidalfin.com/product-page/chabad-heroes",
+      "sourceId": "839ad4d6-e408-2230-4fdb-507e9f7fc657"
+    },
+    {
+      "id": "chabad-on-college-campuses",
+      "title": "Chabad on College Campuses",
+      "price": 100.0,
+      "currency": "USD",
+      "category": "General",
+      "tags": [
+        "New - Limited Print"
+      ],
+      "image": "2603d3_bd48b7defd404670bd0b179fbcb46759~mv2.jpg",
+      "description": "",
+      "format": "book",
+      "purchaseUrl": "https://www.rabbidalfin.com/product-page/chabad-on-college-campuses",
+      "sourceId": "20c298e1-7267-bfdb-59ac-4a52f1e6ef58"
+    },
+    {
+      "id": "chabad-young-israel-and-modern-orthodoxy",
+      "title": "Chabad, Young Israel and Modern Orthodoxy",
+      "price": 40.0,
+      "currency": "USD",
+      "category": "General",
+      "tags": [
+        "New Book - Limited Print"
+      ],
+      "image": "2603d3_574afd18e4a342eda01e2d6196b8d10a~mv2.jpg",
+      "description": "",
+      "format": "book",
+      "purchaseUrl": "https://www.rabbidalfin.com/product-page/chabad-young-israel-and-modern-orthodoxy",
+      "sourceId": "441ab590-43d5-a68d-5c1b-9d4eb354a299"
+    },
+    {
+      "id": "crown-heights-shuls-1900-2025",
+      "title": "Crown Heights Shuls: 1900-2025",
+      "price": 50.0,
+      "currency": "USD",
+      "category": "General",
+      "tags": [
+        "New and v limited quantity"
+      ],
+      "image": "2603d3_715b3286565146efb12c29025f763d07~mv2.jpg",
+      "description": "",
+      "format": "book",
+      "purchaseUrl": "https://www.rabbidalfin.com/product-page/crown-heights-shuls-1900-2025",
+      "sourceId": "61703e00-fc4c-ea6a-c1cf-09af92ed22a6"
+    },
+    {
+      "id": "davening",
+      "title": "Davening",
+      "price": 40.0,
+      "currency": "USD",
+      "category": "General",
+      "tags": [
+        "New Book - Introductry Price"
+      ],
+      "image": "2603d3_d5e95c8e1597492480d8ac40987a5acb~mv2.jpg",
+      "description": "",
+      "format": "book",
+      "purchaseUrl": "https://www.rabbidalfin.com/product-page/davening",
+      "sourceId": "5502c573-2e29-a59f-1460-55510d69bc87"
+    },
+    {
+      "id": "lakewood-city-of-torah-and-chasidus",
+      "title": "Lakewood: City of Torah and Chasidus",
+      "price": 40.0,
+      "currency": "USD",
+      "category": "General",
+      "tags": [
+        "New - Limited Print"
+      ],
+      "image": "2603d3_031b7c1202e84352877bc2f254e72882~mv2.jpg",
+      "description": "",
+      "format": "book",
+      "purchaseUrl": "https://www.rabbidalfin.com/product-page/lakewood-city-of-torah-and-chasidus",
+      "sourceId": "a2784e38-1805-a6e2-c08a-0a8d62ee52fd"
+    },
+    {
+      "id": "practical-halacha",
+      "title": "Practical Halacha",
+      "price": 40.0,
+      "currency": "USD",
+      "category": "General",
+      "tags": [
+        "New Book - Limited Print"
+      ],
+      "image": "2603d3_e03f00fad7274f7b88ac3a89b34fa291~mv2.jpg",
+      "description": "",
+      "format": "book",
+      "purchaseUrl": "https://www.rabbidalfin.com/product-page/practical-halacha-1",
+      "sourceId": "4c739042-f96f-b4d4-3bb0-d4e146abc3f4"
+    },
+    {
+      "id": "rabbis-rebels-and-rebbes",
+      "title": "Rabbis, Rebels, and Rebbes",
+      "price": 40.0,
+      "currency": "USD",
+      "category": "General",
+      "tags": [
+        "New - Limited Print"
+      ],
+      "image": "2603d3_a42cf48374044ebb87b1b4088190a58f~mv2.jpg",
+      "description": "",
+      "format": "book",
+      "purchaseUrl": "https://www.rabbidalfin.com/product-page/rabbis-rebels-and-rebbes",
+      "sourceId": "9889ec9d-f281-6217-2ac2-1918493b2e96"
+    },
+    {
+      "id": "rebbes-secretaries",
+      "title": "Rebbe's Secretaries",
+      "price": 40.0,
+      "currency": "USD",
+      "category": "General",
+      "tags": [
+        "New and v limited quantity"
+      ],
+      "image": "2603d3_53e1a473ac0d48e088063d9b3a5d7a2d~mv2.jpg",
+      "description": "",
+      "format": "book",
+      "purchaseUrl": "https://www.rabbidalfin.com/product-page/rebbe-s-secretaries",
+      "sourceId": "286530e3-11bb-b0ff-a7ff-b7716c76b7da"
+    },
+    {
+      "id": "rebbes-team",
+      "title": "Rebbe's Team",
+      "price": 40.0,
+      "currency": "USD",
+      "category": "General",
+      "tags": [
+        "New and v limited quantity"
+      ],
+      "image": "2603d3_b4e4f647dae64ed6b6a5d201a2ab98f8~mv2.jpg",
+      "description": "",
+      "format": "book",
+      "purchaseUrl": "https://www.rabbidalfin.com/product-page/rebbe-s-team",
+      "sourceId": "0ee63958-efe9-e917-3b00-803a122487c8"
+    },
+    {
+      "id": "rebbe-non-jews-converts",
+      "title": "Rebbe, Non-Jews & Converts",
+      "price": 40.0,
+      "currency": "USD",
+      "category": "General",
+      "tags": [
+        "New Arrival"
+      ],
+      "image": "2603d3_343d795f49e14dc99fd043a7e4ca4bd2~mv2.jpg",
+      "description": "",
+      "format": "book",
+      "purchaseUrl": "https://www.rabbidalfin.com/product-page/rebbe-non-jews-converts",
+      "sourceId": "61c24284-ed3a-1151-6b6f-0e94379d5f2e"
+    },
+    {
+      "id": "the-mashpia-educator-reb-zalman-dvd",
+      "title": "The Mashpia & Educator: Reb Zalman- DVD",
+      "price": 20.0,
+      "currency": "USD",
+      "category": "General",
+      "tags": [],
+      "image": "2603d3_e42624dae11349958b1cd491274a6aef~mv2.jpg",
+      "description": "",
+      "format": "dvd",
+      "purchaseUrl": "https://www.rabbidalfin.com/product-page/the-mashpia-educator-reb-zalman",
+      "sourceId": "25d1625c-3f1e-db39-d82a-4cdc37f226e5"
+    },
+    {
+      "id": "the-real-zalman",
+      "title": "The Real Zalman",
+      "price": 40.0,
+      "currency": "USD",
+      "category": "General",
+      "tags": [
+        "New limited print"
+      ],
+      "image": "2603d3_1e153cf855974df0b39d4071493b1423~mv2.jpg",
+      "description": "",
+      "format": "book",
+      "purchaseUrl": "https://www.rabbidalfin.com/product-page/the-real-zalman",
+      "sourceId": "033dbee2-6cbf-25b3-09fa-d62de7fb8497"
+    },
+    {
+      "id": "the-rebbes-emissary-rabbi-dovid-bryn",
+      "title": "The Rebbe's Emissary: Rabbi Dovid Bryn",
+      "price": 40.0,
+      "currency": "USD",
+      "category": "General",
+      "tags": [],
+      "image": "2603d3_dde87fed14df483b974f89b99c03dcb3~mv2.jpg",
+      "description": "",
+      "format": "book",
+      "purchaseUrl": "https://www.rabbidalfin.com/product-page/the-rebbe-s-emissary-rabbi-dovid-bryn",
+      "sourceId": "d1e050e5-745b-30d8-ed4f-53780ea29427"
+    }
+  ]
+}
