@@ -18,13 +18,13 @@ CLIP_SPECS = [
     {
         "id": "zerizus-miracle",
         "transcriptId": "accident-miracle",
-        "startSec": 202,
+        "startSec": 215,
         "durationSec": 44,
     },
     {
         "id": "yud-tes-kislev",
         "transcriptId": "litvak-becomes-a-chasid",
-        "startSec": 90,
+        "startSec": 103,
         "durationSec": 45,
     },
 ]
@@ -98,16 +98,24 @@ def translate_segments(segments, target: str):
 
 
 def main():
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--en-only", action="store_true", help="Skip ES/FR translation")
+    args = parser.parse_args()
+
     OUT.mkdir(parents=True, exist_ok=True)
     for spec in CLIP_SPECS:
         en_segments = segments_from_transcript(
             spec["transcriptId"], spec["startSec"], spec["durationSec"]
         )
         write_vtt(OUT / f"{spec['id']}.en.vtt", en_segments, "en")
-        for lang in ("es", "fr"):
-            lang_segments = translate_segments(en_segments, lang)
-            write_vtt(OUT / f"{spec['id']}.{lang}.vtt", lang_segments, lang)
-        print(f"{spec['id']}: {len(en_segments)} EN cues, ES/FR translated")
+        if not args.en_only:
+            for lang in ("es", "fr"):
+                lang_segments = translate_segments(en_segments, lang)
+                write_vtt(OUT / f"{spec['id']}.{lang}.vtt", lang_segments, lang)
+            print(f"{spec['id']}: {len(en_segments)} EN cues, ES/FR translated")
+        else:
+            print(f"{spec['id']}: {len(en_segments)} EN cues (ES/FR skipped)")
     return 0
 
 
