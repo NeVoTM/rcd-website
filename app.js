@@ -12,6 +12,8 @@
 
   let data = null;
   let transcriptsIndex = null;
+  let booksData = null;
+  let booksFilter = { category: 'all', query: '', sort: 'title-asc' };
 
   function qs(sel, root) {
     return (root || document).querySelector(sel);
@@ -189,6 +191,157 @@
       : '<p>No transcripts available yet.</p>';
   }
 
+  function formatPrice(amount, currency) {
+    if (!amount || amount <= 0) return 'See shop';
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: currency || 'USD',
+    }).format(amount);
+  }
+
+  function bookBadgeClass(tag) {
+    const t = String(tag).toLowerCase();
+    if (t.includes('new')) return 'badge-new';
+    if (t.includes('limited')) return 'badge-limited';
+    return 'badge-default';
+  }
+
+  function renderBookBadges(tags) {
+    if (!tags || !tags.length) return '';
+    return tags.slice(0, 2).map(tag =>
+      `<span class="book-badge ${bookBadgeClass(tag)}">${escapeHtml(tag)}</span>`
+    ).join('');
+  }
+
+  function filteredBooks() {
+    if (!booksData) return [];
+    let items = (booksData.products || []).slice();
+    if (booksFilter.category !== 'all') {
+      items = items.filter(b => b.category === booksFilter.category);
+    }
+    if (booksFilter.query) {
+      const q = booksFilter.query.toLowerCase();
+      items = items.filter(b =>
+        b.title.toLowerCase().includes(q) ||
+        (b.category || '').toLowerCase().includes(q)
+      );
+    }
+    const sort = booksFilter.sort;
+    items.sort((a, b) => {
+      if (sort === 'price-asc') return (a.price || 0) - (b.price || 0);
+      if (sort === 'price-desc') return (b.price || 0) - (a.price || 0);
+      if (sort === 'title-desc') return b.title.localeCompare(a.title);
+      return a.title.localeCompare(b.title);
+    });
+    return items;
+  }
+
+  function renderBookCard(book) {
+    const cover = book.image
+      ? `<img src="${escapeAttr(book.image)}" alt="" loading="lazy">`
+      : '<div class="book-cover-placeholder"></div>';
+    return `<a class="book-shop-card" href="/product.html?id=${encodeURIComponent(book.id)}">
+      <div class="book-cover">${cover}${renderBookBadges(book.tags)}</div>
+      <div class="book-shop-body">
+        <p class="book-shop-category">${escapeHtml(book.category || '')}</p>
+        <h3>${escapeHtml(book.title)}</h3>
+        <p class="book-shop-price">${formatPrice(book.price, book.currency)}</p>
+      </div>
+    </a>`;
+  }
+
+  function mountBooksCatalog() {
+    const grid = qs('[data-books-grid]');
+    const chips = qs('[data-books-categories]');
+    const countEl = qs('[data-books-count]');
+    const emptyEl = qs('[data-books-empty]');
+    const searchEl = qs('[data-books-search]');
+    const sortEl = qs('[data-books-sort]');
+    if (!grid || !booksData) return;
+
+    function render() {
+      const items = filteredBooks();
+      grid.innerHTML = items.map(renderBookCard).join('');
+      if (countEl) {
+        countEl.textContent = `${items.length} of ${booksData.products.length} titles`;
+      }
+      if (emptyEl) {
+        emptyEl.hidden = items.length > 0;
+      }
+    }
+
+    if (chips) {
+      const cats = ['all', ...(booksData.categories || [])];
+      chips.innerHTML = cats.map(cat => {
+        const label = cat === 'all' ? 'All' : cat;
+        const active = booksFilter.category === cat ? ' is-active' : '';
+        return `<button type="button" class="books-chip${active}" data-category="${escapeAttr(cat)}">${escapeHtml(label)}</button>`;
+      }).join('');
+      chips.querySelectorAll('.books-chip').forEach(btn => {
+        btn.addEventListener('click', () => {
+          booksFilter.category = btn.dataset.category || 'all';
+          chips.querySelectorAll('.books-chip').forEach(b =>
+            b.classList.toggle('is-active', b === btn)
+          );
+          render();
+        });
+      });
+    }
+
+    if (searchEl) {
+      searchEl.addEventListener('input', () => {
+        booksFilter.query = searchEl.value.trim();
+        render();
+      });
+    }
+
+    if (sortEl) {
+      sortEl.value = booksFilter.sort;
+      sortEl.addEventListener('change', () => {
+        booksFilter.sort = sortEl.value;
+        render();
+      });
+    }
+
+    render();
+  }
+
+  function mountProductPage(el) {
+    if (!el || !booksData) return;
+    const id = new URLSearchParams(location.search).get('id');
+    const book = (booksData.products || []).find(b => b.id === id);
+    if (!book) {
+      el.innerHTML = '<p>Book not found. <a href="/books.html">Browse all books</a></p>';
+      return;
+    }
+    document.title = `RCD | ${book.title}`;
+    const meta = qs('meta[name="description"]');
+    if (meta) meta.content = `${book.title} — ${book.category}. ${formatPrice(book.price, book.currency)}`;
+    const cover = book.image
+      ? `<img class="product-cover" src="${escapeAttr(book.image)}" alt="${escapeAttr(book.title)}">`
+      : '';
+    const tags = renderBookBadges(book.tags);
+    const desc = book.description
+      ? `<div class="product-desc prose"><p>${escapeHtml(book.description)}</p></div>`
+      : `<p class="product-desc-muted">Full description available on the Rabbi Dalfin shop.</p>`;
+    el.innerHTML = `
+      <nav class="product-breadcrumb"><a href="/books.html">Books</a><span aria-hidden="true"> / </span><span>${escapeHtml(book.title)}</span></nav>
+      <article class="product-detail">
+        <div class="product-cover-wrap">${cover}${tags ? `<div class="product-badges">${tags}</div>` : ''}</div>
+        <div class="product-info">
+          <p class="book-shop-category">${escapeHtml(book.category || '')}</p>
+          <h1>${escapeHtml(book.title)}</h1>
+          <p class="product-format">${escapeHtml((book.format || 'book').toUpperCase())}</p>
+          <p class="product-price">${formatPrice(book.price, book.currency)}</p>
+          ${desc}
+          <div class="cta-row">
+            <a class="btn primary" href="${escapeAttr(book.purchaseUrl)}" target="_blank" rel="noopener">Buy on RabbiDalfin.com</a>
+            <a class="btn" href="/books.html">All books</a>
+          </div>
+        </div>
+      </article>`;
+  }
+
   function mountTranscriptPage(el) {
     if (!el) return;
     const id = new URLSearchParams(location.search).get('id');
@@ -263,6 +416,8 @@
     mountClipPage(qs('[data-clip-player]'));
     mountTranscriptList(qs('[data-transcript-list]'));
     mountTranscriptPage(qs('[data-transcript-view]'));
+    mountBooksCatalog();
+    mountProductPage(qs('[data-product-detail]'));
     if (page === 'es' || page === 'fr') {
       const lang = page === 'es' ? 'es' : 'fr';
       mountClipGrid(qs('[data-lang-clips]'), c => c.language === lang || c.language === 'en');
@@ -272,10 +427,12 @@
   Promise.all([
     fetch('/data/clips.json').then(r => r.json()),
     fetch('/data/transcripts.json').then(r => r.json()).catch(() => ({ transcripts: [] })),
+    fetch('/data/books.json').then(r => r.json()).catch(() => ({ products: [], categories: [] })),
   ])
-    .then(([clips, transcripts]) => {
+    .then(([clips, transcripts, books]) => {
       data = clips;
       transcriptsIndex = transcripts;
+      booksData = books;
       init();
     })
     .catch(err => console.error('RCD: failed to load site data', err));

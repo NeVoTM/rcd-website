@@ -518,6 +518,265 @@ section > h2::after {
 .book-card h3 { margin-top: 0; color: var(--navy); }
 .book-card p { margin: 0; font-size: 0.92rem; color: var(--muted); }
 
+/* ── Books shop ── */
+.books-layout {
+  display: grid;
+  gap: 2rem;
+  max-width: var(--wrap);
+}
+
+@media (min-width: 900px) {
+  .books-layout {
+    grid-template-columns: 15rem 1fr;
+    align-items: start;
+  }
+}
+
+.books-sidebar {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+}
+
+@media (min-width: 900px) {
+  .books-sidebar { position: sticky; top: 1rem; }
+}
+
+.books-filter-title {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0 0 0.85rem;
+}
+
+.books-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 1.25rem;
+}
+
+.books-chip {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--navy);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.books-chip:hover,
+.books-chip.is-active {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #fff;
+}
+
+.books-toolbar-side { margin-bottom: 0.75rem; }
+
+.books-sort-label {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.35rem;
+}
+
+.books-sort,
+.books-search {
+  width: 100%;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--text);
+}
+
+.books-count {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.books-toolbar-top { margin-bottom: 1.25rem; }
+
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 1.35rem;
+}
+
+.book-shop-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--card);
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.book-shop-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.book-cover {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  background: var(--bg-warm);
+  overflow: hidden;
+}
+
+.book-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.book-cover-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(145deg, var(--navy-deep), var(--navy));
+}
+
+.book-badge {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.45rem;
+  border-radius: 4px;
+  color: #fff;
+  line-height: 1.2;
+  max-width: calc(100% - 1rem);
+}
+
+.badge-new { background: #2d6a4f; }
+.badge-limited { background: #9a3412; }
+.badge-default { background: var(--navy); }
+
+.book-shop-body { padding: 0.85rem 0.9rem 1rem; flex: 1; }
+
+.book-shop-category {
+  margin: 0 0 0.25rem;
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.book-shop-body h3 {
+  margin: 0 0 0.45rem;
+  font-size: 1rem;
+  line-height: 1.25;
+  color: var(--navy);
+}
+
+.book-shop-price {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--navy-deep);
+}
+
+.books-empty {
+  text-align: center;
+  color: var(--muted);
+  padding: 2rem;
+}
+
+.product-breadcrumb {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+  color: var(--muted);
+}
+
+.product-breadcrumb a {
+  color: var(--navy);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.product-breadcrumb a:hover { color: var(--gold); }
+
+.product-detail {
+  display: grid;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (min-width: 768px) {
+  .product-detail { grid-template-columns: minmax(220px, 320px) 1fr; }
+}
+
+.product-cover-wrap { position: relative; }
+
+.product-cover {
+  width: 100%;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
+}
+
+.product-badges {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.product-info h1 { margin: 0 0 0.5rem; }
+
+.product-format {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+.product-price {
+  margin: 0 0 1.25rem;
+  font-family: var(--font-sans);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.product-desc-muted {
+  color: var(--muted);
+  margin: 0 0 1.25rem;
+}
+
 .contact-box {
   background: var(--card);
   padding: 1.75rem;

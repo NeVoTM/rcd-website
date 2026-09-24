@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>RCD | Books — Rabbi Chaim Dalfin</title>
-  <meta name="description" content="106 books and media by Rabbi Chaim Dalfin on the Rebbe, Lubavitch, and Chassidus.">
+  <title>RCD | Book</title>
+  <meta name="description" content="Book details — Rabbi Chaim Dalfin">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="/styles.css">
 </head>
-<body data-page="books">
+<body data-page="product">
   <header class="site-header">
     <div class="wrap header-inner">
       <div class="header-brand">
@@ -31,35 +31,8 @@
       </nav>
     </div>
   </header>
-  <div class="page-banner">
-    <div class="wrap">
-      <span class="section-label">Shop</span>
-      <h1>Books &amp; Media</h1>
-      <p class="lead">The full Rabbi Dalfin library — Rebbe stories, Chabad history, Chassidus, and more. Purchases fulfilled on RabbiDalfin.com.</p>
-    </div>
-  </div>
-  <main class="wrap books-layout">
-    <aside class="books-sidebar" aria-label="Filter books">
-      <h2 class="books-filter-title">Categories</h2>
-      <div class="books-chips" data-books-categories></div>
-      <div class="books-toolbar books-toolbar-side">
-        <label class="books-sort-label" for="books-sort">Sort</label>
-        <select id="books-sort" class="books-sort" data-books-sort>
-          <option value="title-asc">Title A–Z</option>
-          <option value="title-desc">Title Z–A</option>
-          <option value="price-asc">Price: Low to High</option>
-          <option value="price-desc">Price: High to Low</option>
-        </select>
-      </div>
-      <p class="books-count" data-books-count></p>
-    </aside>
-    <section class="books-main">
-      <div class="books-toolbar books-toolbar-top">
-        <input type="search" class="books-search" data-books-search placeholder="Search titles…" aria-label="Search books">
-      </div>
-      <div class="books-grid" data-books-grid></div>
-      <p class="books-empty" data-books-empty hidden>No books match your filters.</p>
-    </section>
+  <main class="wrap">
+    <section data-product-detail></section>
   </main>
   <footer class="site-footer">
     <div class="wrap footer-grid">
