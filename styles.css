@@ -455,12 +455,6 @@ section > h2::after {
   border: 0;
 }
 
-.video-wrap.vertical {
-  aspect-ratio: 9 / 16;
-  max-width: 380px;
-  margin: 1.5rem auto;
-}
-
 .video-wrap video::cue {
   background: rgba(28, 42, 66, 0.88);
   color: #fff;
@@ -866,6 +860,36 @@ section > h2::after {
 }
 
 .transcript-loading { color: var(--muted); }
+
+.transcript-lang-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.transcript-lang-btn {
+  display: inline-block;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--navy);
+  background: var(--card);
+  text-decoration: none;
+}
+
+.transcript-lang-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.transcript-lang-btn.is-active {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #fff;
+}
 
 .site-footer {
   background: var(--navy-deep);
