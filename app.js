@@ -1,6 +1,7 @@
 (function () {
   const NAV = [
     { href: '/watch.html', label: 'Watch' },
+    { href: '/transcripts.html', label: 'Transcripts' },
     { href: '/rebbe.html', label: 'The Rebbe' },
     { href: '/about.html', label: 'About' },
     { href: '/books.html', label: 'Books' },
@@ -10,6 +11,7 @@
   ];
 
   let data = null;
+  let transcriptsIndex = null;
 
   function qs(sel, root) {
     return (root || document).querySelector(sel);
@@ -35,6 +37,13 @@
 
   function escapeAttr(s) {
     return String(s).replace(/"/g, '&quot;');
+  }
+
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
   }
 
   function renderClipCard(clip) {
@@ -110,11 +119,55 @@
       </div>`;
   }
 
+  function renderTranscriptLine(line) {
+    return `<div class="transcript-line"><time class="transcript-time">${escapeHtml(line.time)}</time><p class="transcript-text">${escapeHtml(line.text)}</p></div>`;
+  }
+
+  function mountTranscriptList(el) {
+    if (!el || !transcriptsIndex) return;
+    const items = transcriptsIndex.transcripts || [];
+    el.innerHTML = items.length
+      ? `<ul class="link-list transcript-list">${items.map(t =>
+          `<li><a href="/transcript.html?id=${encodeURIComponent(t.id)}">${t.title}</a><span class="transcript-meta">${t.lineCount} segments · <a href="${t.youtubeUrl}" target="_blank" rel="noopener">YouTube</a></span></li>`
+        ).join('')}</ul>`
+      : '<p>No transcripts available yet.</p>';
+  }
+
+  function mountTranscriptPage(el) {
+    if (!el) return;
+    const id = new URLSearchParams(location.search).get('id');
+    const meta = (transcriptsIndex && transcriptsIndex.transcripts || []).find(t => t.id === id);
+    if (!meta) {
+      el.innerHTML = '<p>Transcript not found.</p>';
+      return;
+    }
+    el.innerHTML = '<p class="transcript-loading">Loading transcript…</p>';
+    fetch(`/data/transcripts/${encodeURIComponent(id)}.json`)
+      .then(r => r.json())
+      .then(t => {
+        document.title = `RCD | ${t.title} — Transcript`;
+        const desc = qs('meta[name="description"]');
+        if (desc) desc.content = `Full transcript: ${t.title}`;
+        el.innerHTML = `
+          <h1>${t.title}</h1>
+          <p class="lead">Word-for-word transcript with timestamps.</p>
+          <div class="cta-row">
+            <a class="btn primary" href="${t.youtubeUrl}" target="_blank" rel="noopener">Watch on YouTube</a>
+            <a class="btn" href="/transcripts.html">All transcripts</a>
+          </div>
+          <div class="transcript-body">${(t.lines || []).map(renderTranscriptLine).join('')}</div>`;
+      })
+      .catch(() => { el.innerHTML = '<p>Failed to load transcript.</p>'; });
+  }
+
   function highlightNav() {
     const path = location.pathname.replace(/\\/g, '/');
     document.querySelectorAll('nav a').forEach(a => {
       const href = a.getAttribute('href');
-      if (href === path || (path === '/' && href === '/index.html')) a.classList.add('active');
+      const isTranscriptPage = path === '/transcript.html' && href === '/transcripts.html';
+      if (href === path || isTranscriptPage || (path === '/' && href === '/index.html')) {
+        a.classList.add('active');
+      }
     });
   }
 
@@ -127,14 +180,22 @@
     mountClipGrid(qs('[data-rebbe-clips]'), c => (c.tags || []).includes('rebbe-stories'));
     mountFeaturedPlayer(qs('[data-featured-player]'), data.featuredClipId);
     mountClipPage(qs('[data-clip-player]'));
+    mountTranscriptList(qs('[data-transcript-list]'));
+    mountTranscriptPage(qs('[data-transcript-view]'));
     if (page === 'es' || page === 'fr') {
       const lang = page === 'es' ? 'es' : 'fr';
       mountClipGrid(qs('[data-lang-clips]'), c => c.language === lang || c.language === 'en');
     }
   }
 
-  fetch('/data/clips.json')
-    .then(r => r.json())
-    .then(d => { data = d; init(); })
-    .catch(err => console.error('RCD: failed to load clips.json', err));
+  Promise.all([
+    fetch('/data/clips.json').then(r => r.json()),
+    fetch('/data/transcripts.json').then(r => r.json()).catch(() => ({ transcripts: [] })),
+  ])
+    .then(([clips, transcripts]) => {
+      data = clips;
+      transcriptsIndex = transcripts;
+      init();
+    })
+    .catch(err => console.error('RCD: failed to load site data', err));
 })();
