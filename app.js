@@ -27,12 +27,13 @@
   }
 
   function renderThumb(clip, autoplay) {
+    const playIcon = '<span class="clip-play" aria-hidden="true"></span>';
     if (isVideoFile(clip)) {
       const url = clipUrl(clip);
-      return `<div class="clip-thumb"><video src="${url}" muted playsinline ${autoplay ? 'autoplay loop' : 'preload="metadata"'}></video></div>`;
+      return `<div class="clip-thumb"><video src="${url}" muted playsinline ${autoplay ? 'autoplay loop' : 'preload="metadata"'}></video>${playIcon}</div>`;
     }
     const poster = data.heroPortrait || (data.portraits && data.portraits[0]) || '';
-    return `<div class="clip-thumb clip-thumb-poster"${poster ? ` style="background-image:url('${poster}')"` : ''}></div>`;
+    return `<div class="clip-thumb clip-thumb-poster"${poster ? ` style="background-image:url('${poster}')"` : ''}>${playIcon}</div>`;
   }
 
   function escapeAttr(s) {
@@ -162,8 +163,10 @@
     if (meta) meta.content = clip.hook;
     const player = isVideoFile(clip) ? renderVideoPlayer(clip, { vertical: true, autoplay: true }) : '';
     el.innerHTML = `
-      <h1>${clip.title}</h1>
-      <p class="lead">${clip.hook}</p>
+      <div class="clip-page-header">
+        <h1>${clip.title}</h1>
+        <p class="lead">${clip.hook}</p>
+      </div>
       ${player}
       <div class="cta-row">
         <a class="btn primary" href="/watch.html">More clips</a>
@@ -213,9 +216,32 @@
       .catch(() => { el.innerHTML = '<p>Failed to load transcript.</p>'; });
   }
 
+  function initMobileNav() {
+    const toggle = document.querySelector('.nav-toggle');
+    const nav = document.querySelector('.site-nav');
+    if (!toggle || !nav) return;
+    toggle.addEventListener('click', () => {
+      const open = nav.classList.toggle('is-open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    nav.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        nav.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
+  function wrapFeaturedSection() {
+    const player = qs('[data-featured-player]');
+    if (!player || !player.parentElement) return;
+    const section = player.closest('section');
+    if (section) section.classList.add('featured-section');
+  }
+
   function highlightNav() {
     const path = location.pathname.replace(/\\/g, '/');
-    document.querySelectorAll('nav a').forEach(a => {
+    document.querySelectorAll('.site-nav a, nav a').forEach(a => {
       const href = a.getAttribute('href');
       const isTranscriptPage = path === '/transcript.html' && href === '/transcripts.html';
       if (href === path || isTranscriptPage || (path === '/' && href === '/index.html')) {
@@ -226,7 +252,9 @@
 
   function init() {
     const page = document.body.dataset.page;
+    initMobileNav();
     highlightNav();
+    wrapFeaturedSection();
     mountHeroPortrait(qs('[data-hero-portrait]'));
     mountPortraitStrip(qs('[data-portrait-strip]'));
     mountClipGrid(qs('[data-clip-grid]'));
