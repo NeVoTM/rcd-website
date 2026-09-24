@@ -42,7 +42,7 @@ def build(lang_code: str):
         lines.append({"time": line["time"], "text": translated})
         if i % 5 == 0:
             print(f"  {lang_code}: {i}/{total}")
-        time.sleep(0.8)
+        time.sleep(2.5)
     out = {
         "id": data["id"],
         "title": title,

@@ -18,7 +18,7 @@ CLIP_SPECS = [
     {
         "id": "zerizus-miracle",
         "transcriptId": "accident-miracle",
-        "startSec": 215,
+        "startSec": 202,
         "durationSec": 44,
     },
     {
