@@ -1,0 +1,2 @@
+# Cloudflare Pages (and Netlify-compatible) rewrites — same behavior as render.yaml
+/clip /clip.html 200
